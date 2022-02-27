@@ -1,0 +1,102 @@
+<div class=" d-flex justify-content-around align-items-center">
+    <mat-card class="w-25 px-3">
+        <mat-card-title class=" display-6"><small>Template Driven Form</small></mat-card-title>
+        <mat-card-content> 
+          <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)" appPassword>
+              <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Full Name</mat-label>
+                    <input matInput name="fullname" ngModel required pattern="[a-zA-ZW -]*">
+                    <mat-error *ngIf="userForm.controls['fullname']?.errors?.required && userForm.controls['fullname']?.touched">
+                      Fullname is required and must be a valid name
+                    </mat-error>
+                    <mat-error *ngIf="userForm.controls['fullname']?.errors?.pattern && !userForm.controls['fullname']?.errors?.required">
+                      Must be a valid name
+                    </mat-error>
+                  </mat-form-field>
+              </p>
+              <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput name="email" ngModel required pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$">
+                    <mat-error *ngIf="userForm.controls['email']?.errors?.required && userForm.controls['email']?.touched">
+                      Email is required.
+                    </mat-error>
+                    <mat-error *ngIf="userForm.controls['email']?.errors?.pattern && !userForm.controls['email']?.errors?.required">
+                      Enter a valid email address, e.g., john@example.com
+                    </mat-error>
+                  </mat-form-field>
+              </p>
+              <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Mobile</mat-label>
+                    <input matInput name="mobile" ngModel required minlength="10" maxlength="12" pattern="[0-9]*">
+                    <mat-error *ngIf="userForm.controls['mobile']?.errors?.required && userForm.controls['mobile']?.touched">
+                      Mobile is required.
+                    </mat-error>
+                    <mat-error *ngIf="userForm.controls['mobile']?.errors?.pattern && 
+                    !userForm.controls['mobile']?.errors?.required">
+                      Must be a valid Mobile Number
+                    </mat-error>
+                    <mat-error *ngIf="!userForm.controls['mobile']?.errors?.pattern &&
+                    userForm.controls['mobile']?.errors?.minlength || 
+                    userForm.controls['mobile']?.errors?.maxlength && 
+                    !userForm.controls['mobile']?.errors?.required
+                    ">
+                      Phone number must be minimum 10 digits and maximum 12 digit in length.
+                    </mat-error>
+                  </mat-form-field>
+              </p>
+              <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="visibility?'text':'password'" name="password" ngModel required minlength="6">
+                    <mat-icon matSuffix (click)="visibility=!visibility">{{visibility?'visibility_off':'visibility'}}</mat-icon>
+                    <mat-error *ngIf="userForm.controls['password']?.errors?.required && userForm.controls['password']?.touched">
+                      Password is required.
+                    </mat-error>
+                    <mat-error *ngIf="userForm.controls['password']?.errors?.minlength && !userForm.controls['password']?.errors?.required
+                    ">
+                    Password must be at least 6 characters.
+                    </mat-error>
+                  </mat-form-field>
+              </p>
+              <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput [type]="cVisibility?'text':'password'" name="confirmPassword" ngModel required>
+                    <mat-icon matSuffix (click)="cVisibility=!cVisibility">{{cVisibility?'visibility_off':'visibility'}}</mat-icon>
+                    <mat-error *ngIf="userForm.controls['confirmPassword']?.errors?.required && userForm.controls['confirmPassword']?.touched">
+                      Confirm Password is required.
+                    </mat-error>
+                    <mat-error *ngIf="userForm.controls['confirmPassword']?.errors?.matchPassword && !userForm.controls['confirmPassword']?.errors?.required
+                    ">
+                    Password Mismatch
+                    </mat-error>
+                  </mat-form-field>
+              </p>
+              <p>
+                <mat-checkbox color="primary" [checked]="checked" (change)="checked=!checked">Agree With Terms And Conditions.</mat-checkbox>
+              </p>
+              <p>
+                  <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid == false && checked==true ? false:true">Sign Up</button>
+              </p>
+          </form>
+        </mat-card-content>
+    </mat-card>
+   <ng-template [ngIf]="showData">
+    <mat-card class="w-25 px-3">
+        <mat-card-title class=" display-6"><small>Template Driven Form Data</small></mat-card-title>
+        <mat-card-content>
+            <mat-list role="list">
+                <mat-list-item role="listitem">Full Name : {{userForm.value.fullname}}</mat-list-item>
+                <mat-list-item role="listitem">Email : {{userForm.value.email}}</mat-list-item>
+                <mat-list-item role="listitem">Mobile : {{userForm.value.mobile}}</mat-list-item>
+                <mat-list-item role="listitem">Password : {{userForm.value.password}}</mat-list-item>
+                <mat-list-item role="listitem">Confirm Password : {{userForm.value.confirmPassword}}</mat-list-item>
+             </mat-list>              
+        </mat-card-content>
+    </mat-card>
+   </ng-template>
+   
+</div>
